@@ -1,0 +1,101 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment
+venv/
+env/
+ENV/
+.venv
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb_checkpoints/
+
+# TensorFlow/Keras
+*.h5
+*.hdf5
+*.pb
+saved_model/
+checkpoints/
+logs/
+tensorboard_logs/
+
+# Data files (large datasets - don't push to GitHub)
+data/isic_prepared/
+data/raw/
+data/processed/
+data/*/images/
+*.csv
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.bmp
+
+# Keep sample images for demo
+!app/assets/*.png
+!app/assets/*.jpg
+!docs/images/*.png
+
+# Model files (large files - don't push to GitHub)
+models/saved_models/*.h5
+models/saved_models/*.keras
+models/checkpoints/*.h5
+models/checkpoints/*.keras
+models/tflite/*.tflite
+*.pkl
+
+# Output files
+outputs/
+results/
+*.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# System
+Thumbs.db
+desktop.ini
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Environment variables
+.env
+.env.local
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# Documentation builds
+docs/_build/
+site/
