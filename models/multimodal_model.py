@@ -1,9 +1,9 @@
-"""
-Multimodal Fusion Model for OncoVisionAI
-Combines CNN (MobileNetV3) for images + MLP for clinical data
-"""
-
-import tensorflow as tf
+import os
+os.environ["KERAS_BACKEND"] = "torch"
+try:
+    import tensorflow as tf
+except ModuleNotFoundError:
+    tf = None
 import keras
 from keras import layers, Model
 from keras.applications import MobileNetV3Small
@@ -198,9 +198,11 @@ class MultimodalCancerDetector:
         self.model.summary()
         print("="*80)
         
-        # Count parameters
         total_params = self.model.count_params()
-        trainable_params = sum([tf.size(w).numpy() for w in self.model.trainable_weights])
+        if tf is not None:
+            trainable_params = sum([tf.size(w).numpy() for w in self.model.trainable_weights])
+        else:
+            trainable_params = sum([np.prod(w.shape) for w in self.model.trainable_weights])
         non_trainable_params = total_params - trainable_params
         
         print(f"\nTotal Parameters: {total_params:,}")

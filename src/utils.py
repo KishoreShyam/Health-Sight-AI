@@ -343,7 +343,6 @@ def create_demo_images(output_dir: str = 'data/demo_images', num_images: int = 1
 
 def print_system_info():
     """Print system and library information"""
-    import tensorflow as tf
     import platform
     
     print("\n" + "="*80)
@@ -351,11 +350,13 @@ def print_system_info():
     print("="*80)
     print(f"Platform: {platform.platform()}")
     print(f"Python Version: {platform.python_version()}")
-    print(f"TensorFlow Version: {tf.__version__}")
-    print(f"GPU Available: {len(tf.config.list_physical_devices('GPU')) > 0}")
-    
-    if len(tf.config.list_physical_devices('GPU')) > 0:
-        print(f"GPU Devices: {tf.config.list_physical_devices('GPU')}")
+    try:
+        import tensorflow as tf
+        print(f"TensorFlow Version: {tf.__version__}")
+        print(f"GPU Available: {len(tf.config.list_physical_devices('GPU')) > 0}")
+    except ModuleNotFoundError:
+        import keras
+        print(f"Keras Version: {keras.__version__} (PyTorch Backend)")
     
     print("="*80 + "\n")
 

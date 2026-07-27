@@ -86,9 +86,12 @@ tmp/
 temp/
 *.tmp
 
-# Environment variables
+# Environment variables & Local Databases
 .env
 .env.local
+*.env
+healthsight_history.db
+*.db
 
 # Testing
 .pytest_cache/

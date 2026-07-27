@@ -10,9 +10,18 @@ import cv2
 from pathlib import Path
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
-import albumentations as A
-from albumentations.pytorch import ToTensorV2
-import tensorflow as tf
+try:
+    import albumentations as A
+    from albumentations.pytorch import ToTensorV2
+except ModuleNotFoundError:
+    A = None
+try:
+    import tensorflow as tf
+    from tensorflow import keras
+    SequenceBase = tf.keras.utils.Sequence
+except ModuleNotFoundError:
+    import keras
+    SequenceBase = object
 from typing import Tuple, Dict, List
 import json
 
@@ -24,7 +33,7 @@ class CancerDataPreprocessor:
         self.img_size = img_size
         self.scaler = StandardScaler()
         
-    def get_augmentation_pipeline(self, mode: str = 'train') -> A.Compose:
+    def get_augmentation_pipeline(self, mode: str = 'train'):
         """
         Create augmentation pipeline for training/validation
         
@@ -34,6 +43,8 @@ class CancerDataPreprocessor:
         Returns:
             Albumentations composition
         """
+        if A is None:
+            return None
         if mode == 'train':
             return A.Compose([
                 A.Resize(self.img_size[0], self.img_size[1]),
@@ -100,8 +111,12 @@ class CancerDataPreprocessor:
         
         # Apply augmentation
         transform = self.get_augmentation_pipeline('train' if augment else 'val')
-        augmented = transform(image=img)
-        img = augmented['image']
+        if transform is not None:
+            augmented = transform(image=img)
+            img = augmented['image']
+        else:
+            img = cv2.resize(img, self.img_size)
+            img = img.astype(np.float32) / 255.0
         
         return img
     
@@ -264,7 +279,7 @@ class CancerDataPreprocessor:
         return dataset
 
 
-class MultimodalDataGenerator(tf.keras.utils.Sequence):
+class MultimodalDataGenerator(SequenceBase):
     """Custom data generator for multimodal inputs"""
     
     def __init__(
